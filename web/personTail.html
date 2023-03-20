@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人员详情</title>
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table.css" rel="stylesheet" type="text/css">
+    <link href="css/addStyle.css" rel="stylesheet" type="text/css">
+    <link href="css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .notice_main1{border: none !important;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            min-width: 1100px;
+            overflow: auto;
+        }
+
+        #box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto 0;
+        }
+
+        #tabs ul {
+            height: 31px;
+            border-left: #ccc solid 1px;
+            border-bottom: #ccc solid 1px;
+        }
+
+        #tabs ul li {
+            float: left;
+            border-top: #ccc solid 1px;
+            border-right: #ccc solid 1px;
+        }
+
+        #tabs ul li a {
+            display: block;
+            padding: 0 12px;
+            line-height: 29px;
+            border: white solid 1px;
+            border-bottom: none;
+            background-color: #e0e0e0;
+            color: #271d1e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /*当一个标题a获得焦点时的样式*/
+        #tabs ul li .current {
+            border-bottom: white solid 1px;
+            background-color: white;
+        }
+
+        #box_main {
+            /*border: #ccc solid 1px;*/
+            border-top: none;
+            background-color: #fff;
+            width: 100%;
+            /*height: 650px;*/
+        }
+
+        #box_main h3 {
+            line-height: 47px;
+            font-size: 22px;
+            color: #434142;
+            border-bottom: #e2e2e2 dashed 1px;
+            margin-bottom: 10px;
+        }
+
+        /*让一开始，所有的内容面板隐藏*/
+        #box_main > div {
+
+            display: none;
+
+        }
+
+        /*一开始，第一个内容面板显示*/
+        #box_main #gallery {
+            display: block;
+            width: 100%;
+            background-color: #ffffff !important;
+
+        }
+
+
+
+        #box_main p {
+            color: #999999;
+            font-size: 12px;
+            line-height: 21px;
+        }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        $(init);
+        function init(){
+            // 遍历每一个li
+            $("#tabs .title").find("li").each(function(index){
+                $(this).on("click",function(){
+                    $(this).siblings().find("a").removeClass("current");
+                    $(this).find("a").addClass("current");
+                    $("#box_main>div").eq(index).fadeIn().siblings().stop().hide();
+                });
+            });
+        }
+    </script>
+</head>
+
+<body onload="tableLoad()">
+
+<div id="box">
+    <div id="tabs">
+        <ul class="title">
+            <li><a href="javascript:void(0)" class="current">基本信息</a></li>
+            <li><a href="javascript:void(0)">资质证书</a></li>
+            <li><a href="javascript:void(0)">人生经历</a></li>
+        </ul>
+    </div>
+    <div id="box_main">
+
+        <div class="contact" style="display: block">
+            <table class="tailTable" border="1">
+                <tr>
+                    <td class="tableImg" rowspan="4" ><img  id="myImage" src="#" alt=""/> </td>
+
+                    <td class="Tailtd_label"><label>姓名</label></td>
+                    <td class="TailTableTd" id="name"></td>
+                    <td class="Tailtd_label"><label>性别</label></td>
+                    <td class="TailTableTd" id="sex"></td>
+                    <td class="Tailtd_label" ><label>年龄</label></td>
+                    <td class="TailTableTd" id="age"></td>
+
+                </tr>
+
+                <tr>
+                    <td class="Tailtd_label"><label>身份证号</label></td>
+                    <td class="TailTableTd" colspan="2" id="num"></td>
+
+                    <td class="Tailtd_label"><label>居住证号</label></td>
+                    <td class="TailTableTd" colspan="2" id="num01"></td>
+
+                </tr>
+
+
+                <tr>
+                    <td class="Tailtd_label"><label>常住地址</label></td>
+                    <td class="TailTableTd"colspan="2" id="addr"></td>
+                    <td class="Tailtd_label"><label>联系电话</label></td>
+                    <td class="TailTableTd"colspan="2" id="tele"></td>
+                </tr>
+
+
+                <tr>
+                    <td class="Tailtd_label"><label>从业资格证编号</label></td>
+                    <td class="TailTableTd"colspan="2" id="num02"></td>
+                    <!--                    <td class="Tailtd_label"><label>从业单位</label></td>-->
+                    <!--                    <td class="TailTableTd">四川省安全生产监督管理部门</td>-->
+                    <td class="Tailtd_label"><label>从业单位</label></td>
+                    <td class="TailTableTd"colspan="2" id="company"></td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="contact">
+            <div class="lawLeft01">
+                <h6>资质列表</h6>
+                <ul class="companyListUl">
+                </ul>
+            </div>
+
+            <div class="lawLeft03">
+                <h6>资质证书查看</h6>
+                <div id="imgDiv">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">名称：</label>
+                    <input type="text" class="find_input" placeholder="" id="ename">
+                    <label class="">类型：</label>
+                    <select class="find_input" id="etype">
+                        <option value="">全部</option>
+                        <option>从业</option>
+                        <option>教育</option>
+                    </select>
+
+                    <button class="check_btn" onclick="ecSearch()">查询</button>
+
+                </p>
+            </div>
+            <table id="table1"></table>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script type="text/javascript" src="js/demo/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        var url = window.location.search;
+        //var s =  url.substring(url.length-1,url.length);
+        var s = url.split("?")[1].split("=")[1];
+        console.log(url);
+        //人员基本信息获取 ldy
+        $.ajax({
+            url: "person/getOne",
+            type: "post",
+            data: {id: s},
+            success: function (ss) {
+                var res = JSON.parse(ss);
+                var s = res.data;
+                $("#name").text(s.name);
+                $("#sex").text(s.sex);
+                $("#age").text(s.age);
+                $("#num").text(s.num);
+                $("#num01").text(s.num01);
+                $("#addr").text(s.addr);
+                $("#tele").text(s.tele);
+                $("#num02").text(s.num02);
+                $("#company").text(s.company);
+                // $("#url").text(s.url);
+                $("#myImage").attr("src", s.url);
+                console.log(s.url);
+
+
+            }
+        });
+        $.ajax({//资质证书 ldy
+            url: "person/certification/getAll",
+            data: {pid:s},
+            type: "post",
+            success: function (res) {
+                var ss = JSON.parse(res);
+                var data = ss.data;
+
+                console.log(ss);
+                for (var i = 0 ; i < data.length ; i++) {
+                    if (i == 0) {
+                        var li = "<li style='font-weight: bold'><a href='#' onclick='change1("+i+")'>"+data[i].name+"</a></li>"
+                    }
+                    else{
+                        var li = "<li><a href='#' onclick='change1("+i+")'>"+data[i].name+"</a></li>"
+                    }
+                    console.log(data[i]);
+
+                    $(".companyListUl").append(li);
+
+                    var img = "<p class='lawLeft03p01'><img src='"+data[i].url+"' class='companyImg'/></p>";
+                    $("#imgDiv").append(img);
+                }
+                var cd = $("#imgDiv").children();
+
+                for (var i =0; i < cd.length;i++) {
+                    if(i != 0) {
+                        cd[i].style.display='none';
+                    }
+                }
+            }
+        })
+        $(function () {
+            $(".companyListUl li a").click(function () {
+                $(this).addClass("conpanyListActive").parents().siblings().find("a").removeClass("conpanyListActive");
+
+            })
+
+            $('#table1').bootstrapTable({//人生经历 ldy
+                method: "post",
+                striped: true,
+                singleSelect: false,
+                url: "person/experience/getAll",
+                dataType: "json",
+                pagination: false, //分页
+                pageSize: 10,
+                pageNumber: 1,
+                search: false, //显示搜索框
+                contentType: "application/x-www-form-urlencoded",
+                queryParams:{name:"",type:"",pid:s},
+                columns: [
+
+                    // {
+                    //     title: "编号",
+                    //     field: 'id',
+                    //     align: 'center',
+                    //     valign: 'middle'
+                    // },
+                    {
+                        title: '经历名称',
+                        field: 'name',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: '类型',
+                        field: 'type',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: '开始时间',
+                        field: 'start',
+                        align: 'center'
+                    },
+                    {
+                        title: '结束时间',
+                        field: 'end',
+                        align: 'center'
+                    },
+                    {
+                        title: '所在地点',
+                        field: 'addr',
+                        align: 'center'
+                    },
+                    {
+                        title: '内容',
+                        field: 'experience',
+                        align: 'center'
+                    }
+
+
+                ]
+            });
+        });
+    });
+
+
+    function change1(id) {
+        var cd = $("#imgDiv").children();
+        var li = $(".companyListUl").children();
+
+        for (var i =0; i < cd.length;i++) {
+            if(i != id) {
+                li[i].style.fontWeight='normal';
+                cd[i].style.display='none';
+            }else {
+                li[i].style.fontWeight='bold';
+                cd[i].style.display='block';
+            }
+        }
+    }
+    function ecSearch(){
+        var url =  window.location.search;
+        var s =  url.split("?")[1].split("=")[1];
+
+        var name = $("#ename").val();
+        var type = $("#etype").val();
+
+        console.log(name);
+        console.log(type);
+
+        $.ajax({
+            url: "person/experience/getAll",
+            type: "post",
+            data:{name:name,type:type,pid:s},
+            success:function (res){
+                var parse = JSON.parse(res);
+                console.log(parse.data);
+                $('#table1').bootstrapTable('load',parse.data);
+            }
+        });
+
+    }
+
+</script>
+
+
+</html>
